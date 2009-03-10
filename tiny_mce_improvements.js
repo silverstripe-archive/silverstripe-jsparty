@@ -53,7 +53,8 @@ LinkForm.prototype = {
  		if($('Form_EditorToolbarLinkForm_TargetBlank')) {
  		    $('Form_EditorToolbarLinkForm_TargetBlank').disabled = (linkType == 'email');
  		    if(typeof setDefaults == 'undefined' || setDefaults) {
- 			    $('Form_EditorToolbarLinkForm_TargetBlank').checked = (linkType != 'internal');
+ 			$('Form_EditorToolbarLinkForm_TargetBlank').checked = (linkType != 'internal');
+			$('Form_EditorToolbarLinkForm_Anchor').value = '';
  		    }
 		}
 	},
@@ -508,7 +509,7 @@ ImageThumbnail.prototype = {
 		var addCaption = formObj.elements.Caption.checked;
 		var cssClass = formObj.elements.CSSClass.value;
 		var baseURL = document.getElementsByTagName('base')[0].href;
-		var relativeHref = this.href.substr(baseURL.length)
+		var relativeHref = this.href.substr(baseURL.length);
 		
 		if(!tinyMCE.selectedInstance) tinyMCE.selectedInstance = tinyMCE.activeEditor;
 		if(tinyMCE.selectedInstance.contentWindow.focus) tinyMCE.selectedInstance.contentWindow.focus();
