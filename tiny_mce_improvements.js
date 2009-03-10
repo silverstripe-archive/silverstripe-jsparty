@@ -53,7 +53,7 @@ LinkForm.prototype = {
  		if($('Form_EditorToolbarLinkForm_TargetBlank')) {
  		    $('Form_EditorToolbarLinkForm_TargetBlank').disabled = (linkType == 'email');
  		    if(typeof setDefaults == 'undefined' || setDefaults) {
- 			    $('Form_EditorToolbarLinkForm_TargetBlank').checked = (linkType != 'internal');
+ 			    $('Form_EditorToolbarLinkForm_TargetBlank').checked = (linkType == 'file');
  		    }
 		}
 	},
