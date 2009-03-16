@@ -362,7 +362,11 @@ SideFormAction.prototype = {
 	},
 	onclick: function() {
 		if(this.parentForm['handle' + this.name]) {
-			this.parentForm['handle' + this.name]();
+			try {
+				this.parentForm['handle' + this.name]();
+			} catch(er) {
+				alert("An error occurred.  Please try again, or reload the CMS if the problem persists.\n\nError details: " + er.message);
+			}
 		} else {
 			alert("Couldn't find form method handle" + this.name);
 		}
