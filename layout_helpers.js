@@ -51,15 +51,8 @@ function getFittingHeight(el, tweakVal, ignoreElements) {
 						}
 					}
 				}
-				/*
-				if(el.id == 'Form_EditForm') {
-				var x,y="";
-				for(x in sibling.style) y += ", " + x + "=" + sibling.style[x];
-				alert(y);
-				}
-				*/
+
 				if(sibling.offsetHeight && notAComment && (sibling.tagName.toLowerCase() != 'script')) {
-					// alert('adding height ' + sibling.tagName + '#' + sibling.id +  '.' + sibling.className);
 					otherHeight += parseInt(sibling.offsetHeight);
 				}
 				
@@ -93,30 +86,9 @@ function getFittingHeight(el, tweakVal, ignoreElements) {
 		tweakVal += getDimension(el.parentNode,'borderTopWidth');
 		tweakVal += getDimension(el.parentNode,'borderBottomWidth');
 	}
-	/*
-	if(el.className == 'tabset') {
-		el.parentNode.style.border = "1px blue solid";
-		for(var i=0;i<el.parentNode.childNodes.length;i++) {
-			var sibling = el.parentNode.childNodes[i];
-			if(sibling.tagName)
-				sibling.style.border = (el == sibling) ? "1px green solid" : "1px orange solid";
-		}
-				
-		alert(el.id + ': ' + el.parentNode.offsetHeight + ', ' + tweakVal + ', ' + otherHeight 
-			+ '\n' + getSiblingList(el) 
-			+ '\n' + getDimension(el,'position',true) + ', ' + getDimension(el,'top')
-		);
 	
-		el.parentNode.style.border = null;
-		for(var i=0;i<el.parentNode.childNodes.length;i++) {
-			var sibling = el.parentNode.childNodes[i];
-			if(sibling.tagName)
-				sibling.style.border = null;
-		}
-	}
-	*/
-
-	// alert(el.id + ' = ' + el.parentNode.offsetHeight + ', ' + tweakVal + ', ' + otherHeight);
+	//console.log(el.id + ': ' + el.parentNode.id+'.offsetHeight=' + el.parentNode.offsetHeight 
+	//	+ ', otherHeight=' + otherHeight + ', tweakVal='  + tweakVal)
 	
 	if(el.parentNode && el.parentNode.offsetHeight - otherHeight - tweakVal < 0) {
 		return 0;
