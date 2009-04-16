@@ -1,0 +1,52 @@
+/*
+ * tabstrip-default.css
+ * Default styling for tabstrips
+ * Designed to look like windows-xp tabs
+ *
+ * Modified by Sean Harvey, SilverStripe Ltd 02/02/2007
+ */
+
+ul.tabstrip {
+	border-bottom: 1px #AAA solid;
+	padding: 0;
+	margin: 0;
+	clear: left;
+	float:left;
+	width:100%;
+	margin-bottom:3px;
+	/* Need this to stop tabs from disappearing sometimes */
+	position: relative;
+}
+	ul.tabstrip li {
+		float:left;
+		list-style:none;			
+		background:url(images/norm_li_bg.gif) no-repeat left 3px;
+		margin-right:2px;
+		padding:0 0 0 9px;
+		cursor: pointer;
+		position:relative;
+		top:1px;
+	}
+		ul.tabstrip li a {
+			background:url(images/norm_a_bg.gif) no-repeat right 3px;
+			display:block;
+			float:left;
+			outline:none;
+			padding:7px 9px 3px 0;
+			text-decoration:none;
+		}
+		ul.tabstrip li a:hover {
+			text-decoration:none;
+		}
+			ul.tabstrip li.current,
+			ul.tabstrip li.sel,
+			ul.tabstrip li.over {
+				background:url(images/sel_li_bg.gif) no-repeat left top;
+				top:1px;
+			}
+				ul.tabstrip li.current a,
+				ul.tabstrip li.sel a,
+				ul.tabstrip li.over a {
+					background:url(images/sel_a_bg.gif) no-repeat right top;
+					padding:6px 9px 5px 0;
+				}
