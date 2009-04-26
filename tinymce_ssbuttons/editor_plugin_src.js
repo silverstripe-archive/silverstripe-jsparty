@@ -85,7 +85,28 @@
 	        ed.onKeyUp.add(function(ed, o) {
 	    	    $('Form_EditorToolbarLinkForm').updateSelection(ed);
 		    });
-		}			
+			
+			// resize image containers when the image is resized.
+			if(!tinymce.isOpera && !tinymce.isWebKit) ed.onMouseUp.add(function(ed, o) {
+				var node = ed.selection.getNode();
+				
+				if(node.nodeName == 'IMG' && ed.dom.getParent(node, 'div')) {
+					// we have to delay the resize check here, as this event handler is called before the actual image
+					// resizing is done.
+					setTimeout(function() {
+						var
+							ed        = tinyMCE.activeEditor, // we need to redeclare these for IE.
+							node      = ed.selection.getNode(),
+							container = ed.dom.getParent(node, 'div');
+						
+						if(node.width && node.width != parseInt(ed.dom.getStyle(container, 'width'))) {
+							ed.dom.setStyle(container, 'width', parseInt(node.width));
+							ed.execCommand('mceRepaint');
+						}
+					}, 1);
+				}
+			});
+		}
 	});
 
 	// Adds the plugin class to the list of available TinyMCE plugins

@@ -534,13 +534,13 @@ ImageThumbnail.prototype = {
 	 * Insert an image with the given attributes
 	 */
 	 ssInsertImage: function(ed, attributes, cssClass, withCaption) {
-	 	el = ed.selection.getNode();
-
-		var imageContainerClass = withCaption ? 'captionImage' : 'image';
-
-		var html = '<div style="width: ' + attributes.width + '" class="' + imageContainerClass + ' ' + cssClass + '"><img id="__mce_tmp" />'; 
+		el = ed.selection.getNode();
+		
+		var imageContainerClass = withCaption ? 'image captionImage' : 'image';
+		
+		var html = '<div style="width: ' + attributes.width + 'px;" class="' + imageContainerClass + ' ' + cssClass + '"><img id="__mce_tmp" />'; 
 		if(withCaption && attributes.title != "") { 
-			html += '<div style="width: ' + attributes.width + '" class="caption">' + attributes.title + '</div>'; 
+			html += '<p class="caption">' + attributes.title + '</p>'; 
 		}
 		html += "</div>";
 		
