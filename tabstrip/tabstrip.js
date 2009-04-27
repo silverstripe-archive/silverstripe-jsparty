@@ -1,6 +1,7 @@
 // jQuery loader
 jQuery('ul.tabstrip').livequery(function() {
     initTabstrip(this);
+    fitToParent(this);
 });
 
 var _CUR_TABS = [];
