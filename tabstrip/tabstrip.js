@@ -38,7 +38,7 @@ function initTabstrip(tabstrip, namedAnchors) {
 			
 			var anchorPos = child.href.indexOf('#');
 			
-			if(anchorPos != -1 && anchorPos >= base) {
+			if(anchorPos != -1) {
 				anchorName = child.href.substr(anchorPos+1);
 				if(firstTab == null) firstTab = anchorName;
 				if(anchorName == curTab) foundATab = true;
