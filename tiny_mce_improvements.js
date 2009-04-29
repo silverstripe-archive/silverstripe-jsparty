@@ -53,8 +53,7 @@ LinkForm.prototype = {
  		if($('Form_EditorToolbarLinkForm_TargetBlank')) {
  		    $('Form_EditorToolbarLinkForm_TargetBlank').disabled = (linkType == 'email');
  		    if(typeof setDefaults == 'undefined' || setDefaults) {
- 			$('Form_EditorToolbarLinkForm_TargetBlank').checked = (linkType != 'internal');
-			$('Form_EditorToolbarLinkForm_Anchor').value = '';
+ 			$('Form_EditorToolbarLinkForm_TargetBlank').checked = (linkType == 'file');
  		    }
 		}
 	},
@@ -363,7 +362,11 @@ SideFormAction.prototype = {
 	},
 	onclick: function() {
 		if(this.parentForm['handle' + this.name]) {
-			this.parentForm['handle' + this.name]();
+			try {
+				this.parentForm['handle' + this.name]();
+			} catch(er) {
+				alert("An error occurred.  Please try again, or reload the CMS if the problem persists.\n\nError details: " + er.message);
+			}
 		} else {
 			alert("Couldn't find form method handle" + this.name);
 		}
@@ -529,13 +532,13 @@ ImageThumbnail.prototype = {
 	 * Insert an image with the given attributes
 	 */
 	 ssInsertImage: function(ed, attributes, cssClass, withCaption) {
-	 	el = ed.selection.getNode();
-
-		var imageContainerClass = withCaption ? 'captionImage' : 'image';
-
-		var html = '<div style="width: ' + attributes.width + '" class="' + imageContainerClass + ' ' + cssClass + '"><img id="__mce_tmp" />'; 
+		el = ed.selection.getNode();
+		
+		var imageContainerClass = withCaption ? 'image captionImage' : 'image';
+		
+		var html = '<div style="width: ' + attributes.width + 'px;" class="' + imageContainerClass + ' ' + cssClass + '"><img id="__mce_tmp" />'; 
 		if(withCaption && attributes.title != "") { 
-			html += '<div style="width: ' + attributes.width + '" class="caption">' + attributes.title + '</div>'; 
+			html += '<p class="caption">' + attributes.title + '</p>'; 
 		}
 		html += "</div>";
 		
