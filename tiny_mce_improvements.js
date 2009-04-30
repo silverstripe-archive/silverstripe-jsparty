@@ -697,7 +697,7 @@ MCEImageResizer.prototype = {
 		var form = $('Form_EditorToolbarImageForm');
 		if(form) {
 			form.elements.AltText.value = this.alt;
-			form.elements.TitleText.value = this.title;
+			form.elements.ImageTitle.value = this.title;
 			form.elements.CSSClass.value = this.className;
 		}
 	},
