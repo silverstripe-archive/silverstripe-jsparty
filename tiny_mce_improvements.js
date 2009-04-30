@@ -385,6 +385,9 @@ ImageForm.prototype = {
 		this.elements.CSSClass.onclick = this.elements.CSSClass.onkeyup = function() {
 			__form.update_params('CSSClass');
 		};
+		this.elements.ImageTitle.onkeyup = function() {
+			__form.update_params('ImageTitle');
+		};
 		this.elements.Width.onchange = function() {
 			__form.update_params('Width');
 		};
@@ -397,6 +400,7 @@ ImageForm.prototype = {
 		this.onsubmit = null;
 
 		this.elements.AltText.onkeyup = null;
+		this.elements.ImageTitle.onkeyup = null;
 		this.elements.CSSClass.onkeyup = null;
 		this.elements.CSSClass.onclick = null;
 		this.elements.Width.onchange = null;
@@ -405,7 +409,7 @@ ImageForm.prototype = {
 	update_params: function(updatedFieldName) {
 		if(tinyMCE.imgElement) {
 			tinyMCE.imgElement.alt = this.elements.AltText.value;
-			tinyMCE.imgElement.title = this.elements.AltText.value;
+			tinyMCE.imgElement.title = this.elements.ImageTitle.value;
 			tinyMCE.imgElement.className = this.elements.CSSClass.value;
 			
 			// Proportionate updating of heights
@@ -424,11 +428,13 @@ ImageForm.prototype = {
 	respondToNodeChange: function() {
 		if(tinyMCE.imgElement) {
 			this.elements.AltText.value = tinyMCE.imgElement.alt;
+			this.elements.ImageTitle.value = tinyMCE.imgElement.title;
 			this.elements.CSSClass.value = tinyMCE.imgElement.className;
 			this.elements.Width.value = tinyMCE.imgElement.style.width ? parseInt(tinyMCE.imgElement.style.width) : tinyMCE.imgElement.width;
 			this.elements.Height.value = tinyMCE.imgElement.style.height ? parseInt(tinyMCE.imgElement.style.height) : tinyMCE.imgElement.height;
 		} else {
 			this.elements.AltText.value = '';
+			this.elements.ImageTitle.value = '';
 			this.elements.CSSClass.value = 'left';
 		}
 	},
@@ -511,6 +517,7 @@ ImageThumbnail.prototype = {
 	insert: function() {
 		var formObj = $('Form_EditorToolbarImageForm');
 		var altText = formObj.elements.AltText.value;
+		var titleText = formObj.elements.ImageTitle.value;
 		var addCaption = formObj.elements.Caption.checked;
 		var cssClass = formObj.elements.CSSClass.value;
 		var baseURL = document.getElementsByTagName('base')[0].href;
@@ -522,9 +529,9 @@ ImageThumbnail.prototype = {
 		this.ssInsertImage(tinyMCE.activeEditor, {
 			'src' : relativeHref,
 			'alt' : altText,
-			'width' : $('Form_EditorToolbarImageForm_Width').value, 
+			'width' : $('Form_EditorToolbarImageForm_Width').value,
 			'height' : $('Form_EditorToolbarImageForm_Height').value,
-			'title' : altText
+			'title' : titleText
 		}, cssClass, addCaption);
 		
 		return false;
@@ -544,9 +551,9 @@ ImageThumbnail.prototype = {
 		}
 		html += "</div>";
 		
-		ed.execCommand('mceInsertContent', false, html, {skip_undo : 1}); 
-		ed.dom.setAttribs('__mce_tmp', attributes); 
-		ed.dom.setAttrib('__mce_tmp', 'id', ''); 
+		ed.execCommand('mceInsertContent', false, html, {skip_undo : 1});
+		ed.dom.setAttribs('__mce_tmp', attributes);
+		ed.dom.setAttrib('__mce_tmp', 'id', '');
 		ed.undoManager.add();
 	}
 	
@@ -693,6 +700,7 @@ MCEImageResizer.prototype = {
 		var form = $('Form_EditorToolbarImageForm');
 		if(form) {
 			form.elements.AltText.value = this.alt;
+			form.elements.TitleText.value = this.title;
 			form.elements.CSSClass.value = this.className;
 		}
 	},
