@@ -85,7 +85,7 @@
 	        ed.onKeyUp.add(function(ed, o) {
 	    	    $('Form_EditorToolbarLinkForm').updateSelection(ed);
 		    });
-		}			
+		}
 	});
 
 	// Adds the plugin class to the list of available TinyMCE plugins

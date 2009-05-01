@@ -53,8 +53,7 @@ LinkForm.prototype = {
  		if($('Form_EditorToolbarLinkForm_TargetBlank')) {
  		    $('Form_EditorToolbarLinkForm_TargetBlank').disabled = (linkType == 'email');
  		    if(typeof setDefaults == 'undefined' || setDefaults) {
- 			$('Form_EditorToolbarLinkForm_TargetBlank').checked = (linkType != 'internal');
-			$('Form_EditorToolbarLinkForm_Anchor').value = '';
+ 			$('Form_EditorToolbarLinkForm_TargetBlank').checked = (linkType == 'file');
  		    }
 		}
 	},
@@ -363,7 +362,11 @@ SideFormAction.prototype = {
 	},
 	onclick: function() {
 		if(this.parentForm['handle' + this.name]) {
-			this.parentForm['handle' + this.name]();
+			try {
+				this.parentForm['handle' + this.name]();
+			} catch(er) {
+				alert("An error occurred.  Please try again, or reload the CMS if the problem persists.\n\nError details: " + er.message);
+			}
 		} else {
 			alert("Couldn't find form method handle" + this.name);
 		}
@@ -379,7 +382,9 @@ ImageForm.prototype = {
 		this.elements.AltText.onkeyup = function() {
 			__form.update_params('AltText');
 		};
-		
+		this.elements.ImageTitle.onkeyup = function() {
+			__form.update_params('ImageTitle');
+		};
 		this.elements.Width.onchange = function() {
 			__form.update_params('Width');
 		};
@@ -392,6 +397,7 @@ ImageForm.prototype = {
 		this.onsubmit = null;
 
 		this.elements.AltText.onkeyup = null;
+		this.elements.ImageTitle.onkeyup = null;
 		this.elements.CSSClass.onkeyup = null;
 		this.elements.CSSClass.onclick = null;
 		this.elements.Width.onchange = null;
@@ -400,7 +406,7 @@ ImageForm.prototype = {
 	update_params: function(updatedFieldName) {
 		if(tinyMCE.imgElement) {
 			tinyMCE.imgElement.alt = this.elements.AltText.value;
-			tinyMCE.imgElement.title = this.elements.AltText.value;
+			tinyMCE.imgElement.title = this.elements.ImageTitle.value;
 			tinyMCE.imgElement.className = this.elements.CSSClass.value;
 			
 			// Proportionate updating of heights
@@ -419,11 +425,13 @@ ImageForm.prototype = {
 	respondToNodeChange: function() {
 		if(tinyMCE.imgElement) {
 			this.elements.AltText.value = tinyMCE.imgElement.alt;
+			this.elements.ImageTitle.value = tinyMCE.imgElement.title;
 			this.elements.CSSClass.value = tinyMCE.imgElement.className;
 			this.elements.Width.value = tinyMCE.imgElement.style.width ? parseInt(tinyMCE.imgElement.style.width) : tinyMCE.imgElement.width;
 			this.elements.Height.value = tinyMCE.imgElement.style.height ? parseInt(tinyMCE.imgElement.style.height) : tinyMCE.imgElement.height;
 		} else {
 			this.elements.AltText.value = '';
+			this.elements.ImageTitle.value = '';
 			this.elements.CSSClass.value = 'left';
 		}
 	},
@@ -506,7 +514,7 @@ ImageThumbnail.prototype = {
 	insert: function() {
 		var formObj = $('Form_EditorToolbarImageForm');
 		var altText = formObj.elements.AltText.value;
-		var addCaption = formObj.elements.Caption.checked;
+		var titleText = formObj.elements.ImageTitle.value;
 		var cssClass = formObj.elements.CSSClass.value;
 		var baseURL = document.getElementsByTagName('base')[0].href;
 		var relativeHref = this.href.substr(baseURL.length);
@@ -517,10 +525,11 @@ ImageThumbnail.prototype = {
 		this.ssInsertImage(tinyMCE.activeEditor, {
 			'src' : relativeHref,
 			'alt' : altText,
-			'width' : $('Form_EditorToolbarImageForm_Width').value, 
+			'width' : $('Form_EditorToolbarImageForm_Width').value,
 			'height' : $('Form_EditorToolbarImageForm_Height').value,
-			'title' : altText
-		}, cssClass, addCaption);
+			'title' : titleText,
+			'class' : cssClass
+		});
 		
 		return false;
 	},
@@ -528,21 +537,17 @@ ImageThumbnail.prototype = {
 	/**
 	 * Insert an image with the given attributes
 	 */
-	 ssInsertImage: function(ed, attributes, cssClass, withCaption) {
-	 	el = ed.selection.getNode();
-
-		var imageContainerClass = withCaption ? 'captionImage' : 'image';
-
-		var html = '<div style="width: ' + attributes.width + '" class="' + imageContainerClass + ' ' + cssClass + '"><img id="__mce_tmp" />'; 
-		if(withCaption && attributes.title != "") { 
-			html += '<div style="width: ' + attributes.width + '" class="caption">' + attributes.title + '</div>'; 
-		}
-		html += "</div>";
+	 ssInsertImage: function(ed, attributes) {
+		el = ed.selection.getNode();
 		
-		ed.execCommand('mceInsertContent', false, html, {skip_undo : 1}); 
-		ed.dom.setAttribs('__mce_tmp', attributes); 
-		ed.dom.setAttrib('__mce_tmp', 'id', ''); 
-		ed.undoManager.add();
+		if(el && el.nodeName == 'IMG') {
+			ed.dom.setAttribs(el, attributes);
+		} else {
+			ed.execCommand('mceInsertContent', false, '<img id="__mce_tmp" />', {skip_undo : 1});
+			ed.dom.setAttribs('__mce_tmp', attributes);
+			ed.dom.setAttrib('__mce_tmp', 'id', '');
+			ed.undoManager.add();
+		}
 	}
 	
 }
@@ -688,6 +693,7 @@ MCEImageResizer.prototype = {
 		var form = $('Form_EditorToolbarImageForm');
 		if(form) {
 			form.elements.AltText.value = this.alt;
+			form.elements.ImageTitle.value = this.title;
 			form.elements.CSSClass.value = this.className;
 		}
 	},
