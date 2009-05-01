@@ -518,7 +518,6 @@ ImageThumbnail.prototype = {
 		var formObj = $('Form_EditorToolbarImageForm');
 		var altText = formObj.elements.AltText.value;
 		var titleText = formObj.elements.ImageTitle.value;
-		var addCaption = formObj.elements.Caption.checked;
 		var cssClass = formObj.elements.CSSClass.value;
 		var baseURL = document.getElementsByTagName('base')[0].href;
 		var relativeHref = this.href.substr(baseURL.length)
@@ -531,8 +530,9 @@ ImageThumbnail.prototype = {
 			'alt' : altText,
 			'width' : $('Form_EditorToolbarImageForm_Width').value,
 			'height' : $('Form_EditorToolbarImageForm_Height').value,
-			'title' : titleText
-		}, cssClass, addCaption);
+			'title' : titleText,
+			'class' : cssClass
+		});
 		
 		return false;
 	},
@@ -540,21 +540,17 @@ ImageThumbnail.prototype = {
 	/**
 	 * Insert an image with the given attributes
 	 */
-	 ssInsertImage: function(ed, attributes, cssClass, withCaption) {
+	 ssInsertImage: function(ed, attributes) {
 		el = ed.selection.getNode();
 		
-		var imageContainerClass = withCaption ? 'image captionImage' : 'image';
-		
-		var html = '<div style="width: ' + attributes.width + 'px;" class="' + imageContainerClass + ' ' + cssClass + '"><img id="__mce_tmp" />'; 
-		if(withCaption && attributes.title != "") { 
-			html += '<p class="caption">' + attributes.title + '</p>'; 
+		if(el && el.nodeName == 'IMG') {
+			ed.dom.setAttribs(el, attributes);
+		} else {
+			ed.execCommand('mceInsertContent', false, '<img id="__mce_tmp" />', {skip_undo : 1});
+			ed.dom.setAttribs('__mce_tmp', attributes);
+			ed.dom.setAttrib('__mce_tmp', 'id', '');
+			ed.undoManager.add();
 		}
-		html += "</div>";
-		
-		ed.execCommand('mceInsertContent', false, html, {skip_undo : 1});
-		ed.dom.setAttribs('__mce_tmp', attributes);
-		ed.dom.setAttrib('__mce_tmp', 'id', '');
-		ed.undoManager.add();
 	}
 	
 }
