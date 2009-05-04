@@ -385,6 +385,9 @@ ImageForm.prototype = {
 		this.elements.ImageTitle.onkeyup = function() {
 			__form.update_params('ImageTitle');
 		};
+		this.elements.ImageTitle.onkeyup = function() {
+			__form.update_params('ImageTitle');
+		};
 		this.elements.Width.onchange = function() {
 			__form.update_params('Width');
 		};
