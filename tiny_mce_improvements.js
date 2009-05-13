@@ -442,9 +442,11 @@ ImageForm.prototype = {
 	selectImage: function(image) {
 		if(this.selectedImage) {
 			this.selectedImage.setAttribute("class", "");
+			this.selectedImage.className = "";
 		}
 		this.selectedImage = image;
 		this.selectedImage.setAttribute("class", "selectedImage");
+		this.selectedImage.className = "selectedImage";
 		
 		try {
 			var imgTag = image.getElementsByTagName('img')[0];
