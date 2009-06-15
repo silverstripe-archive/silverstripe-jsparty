@@ -12,6 +12,6 @@ Here's some step-by-step instructions on how to upgrade to a new version:
 8. Unpack the main package contents, unpack the language pack into the same directory, overwriting the existing files
 9. Find the spellchecker directory in plugins/spellchecker. Unpack the spellchecker files into this directory overwriting any old ones
 10. Check that any changes to the old TinyMCE branch need to make their way into the new one
-11. Commit all your changes to the branch
+11. Commit all your changes to the new branch (svn add them, then svn commit)
 12. Update the externals for jsparty ("svn propedit svn:externals ." whilst in the jsparty directory) to reflect the new TinyMCE branch you created
 13. SVN update the jsparty folder, and commit the externals "svn commit ."
