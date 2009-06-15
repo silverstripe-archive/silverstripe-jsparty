@@ -1,0 +1,17 @@
+TinyMCE is included as an external reference to a branch.
+
+Here's some step-by-step instructions on how to upgrade to a new version:
+
+1. Go to http://tinymce.moxiecode.com/download.php
+2. Download the main package zip file (e.g tinymce_3_2_4_1.zip) and PHP spellchecker (e.g. tinymce_spellchecker_php_2_0_2.zip)
+3. Go to http://tinymce.moxiecode.com/download_i18n.php
+4. Check all available languages, and download and hit download to receive a language pack
+5. Create a branch for the new version of TinyMCE. e.g. "svn mkdir svn://svn.silverstripe.com/silverstripe/open/thirdparty/tiny_mce/branches/3.2.4.1"
+6. Checkout the empty branch out into a directory on your file system. e.g. "svn co svn://svn.silverstripe.com/silverstripe/open/thirdparty/tiny_mce/branches/3.2.4.1"
+7. Copy the main package zip file and language pack zip file into the directory that you just checked out
+8. Unpack the main package contents, unpack the language pack into the same directory, overwriting the existing files
+9. Find the spellchecker directory in plugins/spellchecker. Unpack the spellchecker files into this directory overwriting any old ones
+10. Check that any changes to the old TinyMCE branch need to make their way into the new one
+11. Commit all your changes to the branch
+12. Update the externals for jsparty ("svn propedit svn:externals ." whilst in the jsparty directory) to reflect the new TinyMCE branch you created
+13. SVN update the jsparty folder, and commit the externals "svn commit ."
