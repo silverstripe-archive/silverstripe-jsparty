@@ -523,6 +523,7 @@ ImageThumbnail.prototype = {
 		var cssClass = formObj.elements.CSSClass.value;
 		var baseURL = document.getElementsByTagName('base')[0].href;
 		var relativeHref = this.href.substr(baseURL.length);
+		var captionText = formObj.elements.CaptionText.value;
 		
 		if(!tinyMCE.selectedInstance) tinyMCE.selectedInstance = tinyMCE.activeEditor;
 		if(tinyMCE.selectedInstance.contentWindow.focus) tinyMCE.selectedInstance.contentWindow.focus();
@@ -534,7 +535,7 @@ ImageThumbnail.prototype = {
 			'height' : $('Form_EditorToolbarImageForm_Height').value,
 			'title' : titleText,
 			'class' : cssClass
-		});
+		}, captionText);
 		
 		return false;
 	},
@@ -542,13 +543,26 @@ ImageThumbnail.prototype = {
 	/**
 	 * Insert an image with the given attributes
 	 */
-	 ssInsertImage: function(ed, attributes) {
+	 ssInsertImage: function(ed, attributes, captionText) {
 		el = ed.selection.getNode();
+		var html = '';
+		
+		if(captionText) {
+			html = '<div style="width: ' + attributes.width + 'px;" class="captionImage ' + attributes.class + '">';
+			html += '<img id="__mce_tmp" />';
+			html += '<p class="caption">' + captionText + '</p>';
+			html += '</div>';
+		} else {
+			html = '<img id="__mce_tmp" />';
+		}
 		
 		if(el && el.nodeName == 'IMG') {
 			ed.dom.setAttribs(el, attributes);
 		} else {
-			ed.execCommand('mceInsertContent', false, '<img id="__mce_tmp" />', {skip_undo : 1});
+			ed.execCommand('mceInsertContent', false, html, {
+				skip_undo : 1
+			});
+			
 			ed.dom.setAttribs('__mce_tmp', attributes);
 			ed.dom.setAttrib('__mce_tmp', 'id', '');
 			ed.undoManager.add();
