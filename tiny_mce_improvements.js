@@ -545,10 +545,10 @@ ImageThumbnail.prototype = {
 	 */
 	 ssInsertImage: function(ed, attributes, captionText) {
 		el = ed.selection.getNode();
-		var html = '';
+		var html;
 		
 		if(captionText) {
-			html = '<div style="width: ' + attributes.width + 'px;" class="captionImage ' + attributes.class + '">';
+			html = '<div style="width: ' + attributes.width + 'px;" class="captionImage ' + attributes['class'] + '">';
 			html += '<img id="__mce_tmp" />';
 			html += '<p class="caption">' + captionText + '</p>';
 			html += '</div>';
