@@ -214,7 +214,7 @@ LinkForm.prototype = {
 	},
 	
 	handleaction_remove: function() {
-		tinyMCE.execInstanceCommand(tinyMCE.activeEditor, 'unlink', false);
+		tinyMCE.activeEditor.execCommand('unlink', false);
 	},
 	
 	/**
