@@ -425,13 +425,14 @@ TreeNode.prototype = {
 	
 	open : function () {
 		// Normal tree node
-		if(this.className.indexOf('unexpanded') != -1) {
+		if(Element.hasClassName(this, 'unexpanded') && !this.hasChildren()) {
 			if(this.ajaxExpansion) this.ajaxExpansion();
 		} 
 
 		if(!this.className.match(/(^| )closed($| )/)) return;
 
 		this.removeNodeClass('closed');
+		this.removeNodeClass('unexpanded');
 	},
 	close : function () {
 		this.addNodeClass('closed');
@@ -911,7 +912,6 @@ MultiselectTree.prototype = {
 	
 	multiselect_handleSelectionChange : function(selectedNode) {
 		var idx = this.getIdxOf(selectedNode);
-		
 		if(selectedNode.selected) {
 			selectedNode.removeNodeClass('selected');
 			selectedNode.selected = false;
