@@ -44,15 +44,21 @@ var Droppables = {
   },
 
   isAffected: function(pX, pY, element, drop) {
+    // fetch updated element parameters if possible
+    if ( drop.element.id )
+      freshElement = $(drop.element.id);
+    else
+      freshElement = drop.element;
+	
     return (
-      (drop.element!=element) && ($(drop.element.id).parentNode) && 
+      (drop.element!=element) && (freshElement.parentNode) && 
       ((!drop._containers) ||
         this.isContained(element, drop)) &&
       ((!drop.accept) ||
         (Element.classNames(element).detect( 
           function(v) { return drop.accept.include(v) } ) )) &&
 		((!drop.checkDroppableIsntContained) || !Element.contains(element, drop.element)) &&
-      Position.within($(drop.element.id), pX, pY) );
+      Position.within(freshElement, pX, pY) );
   },
 
   deactivate: function(drop) {
