@@ -45,14 +45,14 @@ var Droppables = {
 
   isAffected: function(pX, pY, element, drop) {
     return (
-      (drop.element!=element) && (drop.element.parentNode) && 
+      (drop.element!=element) && ($(drop.element.id).parentNode) && 
       ((!drop._containers) ||
         this.isContained(element, drop)) &&
       ((!drop.accept) ||
         (Element.classNames(element).detect( 
           function(v) { return drop.accept.include(v) } ) )) &&
 		((!drop.checkDroppableIsntContained) || !Element.contains(element, drop.element)) &&
-      Position.within(drop.element, pX, pY) );
+      Position.within($(drop.element.id), pX, pY) );
   },
 
   deactivate: function(drop) {
