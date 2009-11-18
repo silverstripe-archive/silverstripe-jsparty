@@ -596,10 +596,12 @@ TreeNode.prototype = {
 		this.removeNodeClass('loading');
 		this.removeNodeClass('unexpanded');
 		
-		// add new li elements as DropFileItem targets
-		list = ul.getElementsByTagName("li");
-		for ( var i=0; i<list.length; i++ ) {
-			behaveAs(list[i], DropFileItem);
+		if (typeof(DropFileItem) !== 'undefined') {
+			// add new li elements as DropFileItem targets
+			list = ul.getElementsByTagName("li");
+			for ( var i=0; i<list.length; i++ ) {
+				behaveAs(list[i], DropFileItem);
+			}
 		}
 	}
 }
